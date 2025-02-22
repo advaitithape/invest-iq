@@ -1,11 +1,16 @@
 from fastapi import FastAPI
-from backend.authentication.routes import router as auth_router  # Import auth routes
+from backend.authentication.routes import router
+from backend.chatbot.bot import router as bot_router
 
 app = FastAPI()
 
-# Include authentication routes
-app.include_router(auth_router, prefix="/auth")
+app.include_router(router)
+app.include_router(bot_router)
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Finance Website API!"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
